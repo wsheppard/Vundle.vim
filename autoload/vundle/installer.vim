@@ -415,7 +415,11 @@ func! s:make_sync_command(bang, bundle) abort
 
     let initial_sha = s:get_current_sha(a:bundle)
   else
-    let cmd = 'git clone --recursive '.vundle#installer#shellesc(a:bundle.uri).' '.vundle#installer#shellesc(a:bundle.path())
+    let cmd_parts = [
+                  \ 'cd /home/wsheppard/.vim/bundle/' ,
+                  \ 'git clone --recursive '.vundle#installer#shellesc(a:bundle.uri)]
+    let cmd = join(cmd_parts, ' && ')
+    let cmd = vundle#installer#shellesc_cd(cmd)
     let initial_sha = ''
   endif
   return [cmd, initial_sha]
